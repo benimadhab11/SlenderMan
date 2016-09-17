@@ -2,20 +2,79 @@
 <html>
 <head>
     <meta charset="utf-8" />
-
-
-    <title>Phaser Isometric Game Engine Plugin</title>
-
-    <link rel="stylesheet" type="text/css" href="css/style.css"/>
-    <script src="js/TweenMax.min.js"></script>
-    <script src="js/easystar-0.2.1.min.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/phaser.min.js"></script>
-    <script src="js/phaser-plugin-isometric.min.js"></script>
+    <title>Gamedev Phaser Workshop - lesson 01: Initialize the framework</title>
+    <style>* { padding: 0; margin: 0; }</style>
+    <script src="phaser.min.js"></script>
 </head>
 <body>
 
 
 
+
+<script>
+    var game = new Phaser.Game(1301, 683, Phaser.AUTO, null, {
+      preload: preload, create: create, update: update
+    });
+
+function preload() {
+    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    game.scale.pageAlignHorizontally = true;
+    game.scale.pageAlignVertically = true;
+    game.stage.backgroundColor = '#eee';
+    game.load.image('tile', 'assets/gfx/ground.png');
+
+
+
+}
+function create() {
+   //game.stage.backgroundColor = 0x4488cc;
+
+     // The radius of the circle of light
+      LIGHT_RADIUS = 50;
+
+     // Add random people on the screen
+
+    game.add.tileSprite(0, 0, 1300, 700,'tile');
+     // Create the shadow texture
+      shadowTexture = game.add.bitmapData( game.width,  game.height);
+
+     // Create an object that will use the bitmap as a texture
+     var lightSprite = game.add.image(0, 0,  shadowTexture);
+
+     // Set the blend mode to MULTIPLY. This will darken the colors of
+     // everything below this sprite.
+     lightSprite.blendMode = Phaser.blendModes.MULTIPLY;
+
+     // Simulate a pointer click/tap input at the center of the stage
+     // when the example begins running.
+     game.input.activePointer.x =  game.width/2;
+    game.input.activePointer.y =  game.height/2;
+}
+function update() {
+updateShadowTexture();
+}
+function updateShadowTexture(){
+   shadowTexture.context.fillStyle = 'rgb(100, 100, 100)';
+ shadowTexture.context.fillRect(0, 0,  game.width,  game.height);
+
+// Draw circle of light with a soft edge
+var gradient =  shadowTexture.context.createRadialGradient(
+     game.input.activePointer.x,  game.input.activePointer.y,  LIGHT_RADIUS * 0.75,
+     game.input.activePointer.x,  game.input.activePointer.y,  LIGHT_RADIUS);
+gradient.addColorStop(0, 'rgba(255, 255, 255, 1.0)');
+gradient.addColorStop(1, 'rgba(255, 255, 255, 0.0)');
+
+ shadowTexture.context.beginPath();
+ shadowTexture.context.fillStyle = gradient;
+ shadowTexture.context.arc( game.input.activePointer.x,  game.input.activePointer.y,
+     LIGHT_RADIUS, 0, Math.PI*2);
+ shadowTexture.context.fill();
+
+// This just tells the engine it should update the texture cache
+ shadowTexture.dirty = true;
+
+}
+//) take care of loading the images from the remote server
+</script>
 </body>
 </html>
