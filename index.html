@@ -2,37 +2,21 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Aigame</title>
-    <style>* { padding: 0; margin: 0; }</style>
-    <script src="phaser.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="Phaser Isometric Game Engine Plugin"/>
+
+    <title>Phaser Isometric Game Engine Plugin</title>
+
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <script src="js/TweenMax.min.js"></script>
+    <script src="js/easystar-0.2.1.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/phaser.min.js"></script>
+    <script src="js/phaser-plugin-isometric.min.js"></script>
 </head>
 <body>
 
-<script>
-    var game = new Phaser.Game(200, 200, Phaser.AUTO, null, {
-      preload: preload, create: create, update: update
-    });
 
 
-function preload() {
-    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-    game.scale.pageAlignHorizontally = true;
-    game.scale.pageAlignVertically = true;
-    game.stage.backgroundColor = '#eee';
-
-
-
-}
-function create() {
-
-}
-function update() {
-
-}
-
-function startGame() {
-
-}// this function (needed only on JSFiddle) take care of loading the images from the remote server
-</script>
 </body>
 </html>
