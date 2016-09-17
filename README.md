@@ -1,3 +1,3 @@
 # SlenderMan
-AI Game
-![alt tag](https://github.com/benimadhab11/SlenderMan/game.gif)
+
+![alt tag](https://github.com/benimadhab11/SlenderMan/blob/master/game.gif)
