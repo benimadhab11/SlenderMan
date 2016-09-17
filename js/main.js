@@ -7,6 +7,7 @@ var floorGroup;
 var exitMarker;
 
 var grassGroup;
+var cursors;
 
 var itemsTxt, endTxt;
 var txt = "";
@@ -142,8 +143,8 @@ var init = function () {
 	        game.load.image('SW', 'images/controls/SW.png');
 	        game.load.image('W', 'images/controls/W.png');
 
-	        game.load.spritesheet('characterAnim','images/tiles/characterAnim.png', 70, 74);
-	        game.load.spritesheet('cowboy','images/enemy1.png', 70, 74);
+	        game.load.spritesheet('characterAnim','images/enemy1.png', 70, 74);
+	        game.load.spritesheet('cowboy','images/tiles/characterAnim.png', 70, 74);
 
 	        game.time.advancedTiming = true;
 
@@ -161,8 +162,9 @@ var init = function () {
 	    },
 	    create: function () {
 
+        cursors = game.input.keyboard.createCursorKeys();
 	    	// set the Background color of our game
-	    	game.stage.backgroundColor = "0xde6712";
+	    	game.stage.backgroundColor = "0x3B5323";
 	    	// create groups for different tiles
 	    	floorGroup = game.add.group();
 	    	itemGroup = game.add.group();
@@ -176,6 +178,7 @@ var init = function () {
 	        for (var xt = 0; xt < mapSize * tileSize; xt += tileSize) {
 	            for (var yt = 0; yt < mapSize * tileSize; yt += tileSize) {
 	            	floorTile = game.add.isoSprite(xt, yt, 0, 'tile', 0, floorGroup);
+                floorTile.tint=0x0fffff;
 	            	floorTile.anchor.set(0.5);
 	            }
 	        }
@@ -230,7 +233,6 @@ var init = function () {
 
 		            	// Let the physics engine do its job on this tile type
 		                game.physics.isoArcade.enable(rock);
-
 		                // This will prevent our physic bodies from going out of the screen
 		                rock.body.collideWorldBounds = true;
 
@@ -532,14 +534,13 @@ var init = function () {
 	        	    if (path) {
 	        	    	currentNextPointX = path[1].x;
 	        	        currentNextPointY = path[1].y;
-                    console.log(currentNextPointX,currentNextPointY);
 	        	    }
 
 	        	    if (currentNextPointX < currentCowboyXtile && currentNextPointY < currentCowboyYtile)
 	        	    {
 	        	    	// left up
 
-	        	    	console.log("GO LEFT UP");
+	        	  //  	console.log("GO LEFT UP");
 
 	        	    	enemyDirection = "NW";
 	        	    }
@@ -547,7 +548,7 @@ var init = function () {
 	        	    {
 	        	    	// up
 
-	        	    	console.log("GO UP");
+	        	    //	console.log("GO UP");
 
 	        	    	enemyDirection = "N";
 
@@ -556,7 +557,7 @@ var init = function () {
 	        	    {
 	        	    	// right up
 
-	        	    	console.log("GO RIGHT UP");
+	        	    	//console.log("GO RIGHT UP");
 
 	        	    	enemyDirection = "NE";
 
@@ -565,7 +566,7 @@ var init = function () {
 	        	    {
 	        	    	// left
 
-	        	    	console.log("GO LEFT");
+	        	    	//console.log("GO LEFT");
 
 	        	    	enemyDirection = "W";
 
@@ -574,7 +575,7 @@ var init = function () {
 	        	    {
 	        	    	// right
 
-	        	    	console.log("GO RIGHT");
+	        	    	//console.log("GO RIGHT");
 
 	        	    	enemyDirection = "E";
 
@@ -583,7 +584,7 @@ var init = function () {
 	        	    {
 	        	    	// right down
 
-	        	    	console.log("GO RIGHT DOWN");
+	        	    	//console.log("GO RIGHT DOWN");
 
 	        	    	enemyDirection = "SE";
 
@@ -592,7 +593,7 @@ var init = function () {
 	        	    {
 	        	    	// down
 
-	        	    	console.log("GO DOWN");
+	        	  //  	console.log("GO DOWN");
 
 	        	    	enemyDirection = "S";
 
@@ -601,7 +602,7 @@ var init = function () {
 	        	    {
 	        	    	// left down
 
-	        	    	console.log("GO LEFT DOWN");
+	        	    //	console.log("GO LEFT DOWN");
 
 	        	    	enemyDirection = "SW";
 
@@ -628,57 +629,87 @@ var init = function () {
 
 	    },
 	    update: function () {
-
+      //  console.log(player.x+"dafdsasd"+player.body.position.x);
+updateShadowTexture(player.x,player.y);
+// radians = game.physics.arcade.angleBetween(marker4, player);
+// degrees = radians * (180/Math.PI);
+// game.physics.arcade.velocityFromAngle(degrees, 300, marker4.body.velocity);
 	    	// Move the player
+        if (cursors.left.isDown)
+      {
+      	  Wdown= true;
+        	Edown= false;
+          Ndown= false;
+          Sdown= false;
+
+
+      }
+      else if (cursors.right.isDown)
+      {
+        Wdown= false;
+        Ndown= false;
+        Sdown= false;
+      		Edown= true;
+      }
+
+      if (cursors.up.isDown)
+      {
+      		Ndown= true;
+          Wdown= false;
+        	Edown= false;
+
+          Sdown= false;
+      }
+      else if (cursors.down.isDown)
+      {	Sdown= true;
+        Wdown= false;
+        Edown= false;
+        Ndown= false;
+      }
+
 	        var speed = 100;
           currentPlayerXtile = Math.floor(player.body.position.x / tileSize);
           currentPlayerYtile = Math.floor(player.body.position.y / tileSize);
 
+          //console.log(player.body.position.x,player.body.position.y);
 	        if (Ndown == true) {
 	        	player.body.velocity.y = -speed;
 	        	player.body.velocity.x = -speed;
-            //updateShadowTexture(player.body.position.x+val1,player.body.position.y+val2);
 	        }
 	        else if (Sdown == true)
 	        {
 	        	player.body.velocity.y = speed;
 	        	player.body.velocity.x = speed;
 
-                      //  updateShadowTexture(player.body.position.x+val1,player.body.position.y+val2);
 	        }
 	        else if (Edown == true) {
 	        	player.body.velocity.x = speed;
 	        	player.body.velocity.y = -speed;
 
-//updateShadowTexture(player.body.position.x+val1,player.body.position.y+val2);
 	        }
 	        else if (Wdown == true)
 	        {
 	        	player.body.velocity.x = -speed;
 	        	player.body.velocity.y = speed;
 
-//updateShadowTexture(player.body.position.x+val1,player.body.position.y+val2);
 	        }
 	        else if (SEdown == true)
 	        {
 	        	player.body.velocity.x = speed;
 	        	player.body.velocity.y = 0;
 
-//updateShadowTexture(player.body.position.x+val1,player.body.position.y+val2);
 	        }
 	        else if (SWdown == true)
 	        {
 	        	player.body.velocity.y = speed;
 	        	player.body.velocity.x = 0;
 
-//updateShadowTexture(player.body.position.x+val1,player.body.position.y+val2);
 	        }
 	        else if (NWdown == true)
 	        {
 	        	player.body.velocity.x = -speed;
 	        	player.body.velocity.y = 0;
 
-//updateShadowTexture(player.body.position.x+val1,player.body.position.y+val2);
 
 	        }
 	        else if (NEdown == true)
@@ -686,7 +717,7 @@ var init = function () {
 	        	player.body.velocity.y = -speed;
 	        	player.body.velocity.x = 0;
 
-//updateShadowTexture(player.body.position.x+val1,player.body.position.y+val2);
+
 
 	        }
 	        else
@@ -818,6 +849,10 @@ var init = function () {
 	        	addItem();
 
 	        });
+          game.physics.isoArcade.overlap( cowboy ,player,function(e){
+	        	console.log("Gameover");
+
+	        	        });
 
 	       check = game.physics.isoArcade.overlap(exitMarker, player ,function(e){
 
@@ -861,32 +896,15 @@ var init = function () {
 	       //cowboy.body.velocity.x = 30;
 
 	       game.iso.topologicalSort(obstacleGroup);
-         updateShadowTexture(player.body.position.x,player.body.position.y);
-
-                   console.log(player.body.position.x,player.body.position.y);
 
 	    },
 	    render: function () {
-
-	    /*
-	       game.debug.text("PLAYER X = " + currentPlayerXtile, 400, 22, "#ffffff");
-	       game.debug.text("PLAYER Y = " + currentPlayerYtile, 400, 42, "#ffffff");
-
-	       game.debug.text("COWBOY X = " + currentCowboyXtile, 400, 62, "#ffffff");
-	       game.debug.text("COWBOY Y = " + currentCowboyYtile, 400, 82, "#ffffff");
-
-	       game.debug.text("NEXTPOINT X = " + currentNextPointX, 400, 102, "#ffffff");
-	       game.debug.text("NEXTPOINT Y = " + currentNextPointY, 400, 122, "#ffffff");
-	    */
-
-	       //obstacleGroup.forEach(function (tile) { game.debug.body(tile, 'rgba(189, 221, 235, 0.6)', false); });
 
 	    }
 	};
 
 	game.state.add('Boot', BasicGame.Boot);
 	game.state.start('Boot');
-
   function updateShadowTexture(x,y){
     shadowTexture.context.fillStyle = 'rgb(100, 100, 100)';
    shadowTexture.context.fillRect(0, 0,  width,  height);
