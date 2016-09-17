@@ -532,6 +532,7 @@ var init = function () {
 	        	    if (path) {
 	        	    	currentNextPointX = path[1].x;
 	        	        currentNextPointY = path[1].y;
+                    console.log(currentNextPointX,currentNextPointY);
 	        	    }
 
 	        	    if (currentNextPointX < currentCowboyXtile && currentNextPointY < currentCowboyYtile)
@@ -620,7 +621,7 @@ var init = function () {
 
 	        }, timeStep);
 
-          LIGHT_RADIUS = 200;
+          LIGHT_RADIUS = 100;
           shadowTexture = game.add.bitmapData( 3000,  1600);
           var lightSprite = game.add.image(0, 0,  shadowTexture);
           lightSprite.blendMode = Phaser.blendModes.MULTIPLY;
@@ -633,52 +634,51 @@ var init = function () {
           currentPlayerXtile = Math.floor(player.body.position.x / tileSize);
           currentPlayerYtile = Math.floor(player.body.position.y / tileSize);
 
-          console.log(player.body.position.x,player.body.position.y);
 	        if (Ndown == true) {
 	        	player.body.velocity.y = -speed;
 	        	player.body.velocity.x = -speed;
-            updateShadowTexture(player.body.position.x,player.body.position.y);
+            //updateShadowTexture(player.body.position.x+val1,player.body.position.y+val2);
 	        }
 	        else if (Sdown == true)
 	        {
 	        	player.body.velocity.y = speed;
 	        	player.body.velocity.x = speed;
 
-            updateShadowTexture(player.body.position.x,player.body.position.y);
+                      //  updateShadowTexture(player.body.position.x+val1,player.body.position.y+val2);
 	        }
 	        else if (Edown == true) {
 	        	player.body.velocity.x = speed;
 	        	player.body.velocity.y = -speed;
 
-             updateShadowTexture(player.body.position.x,player.body.position.y);
+//updateShadowTexture(player.body.position.x+val1,player.body.position.y+val2);
 	        }
 	        else if (Wdown == true)
 	        {
 	        	player.body.velocity.x = -speed;
 	        	player.body.velocity.y = speed;
 
-             updateShadowTexture(player.body.position.x,player.body.position.y);
+//updateShadowTexture(player.body.position.x+val1,player.body.position.y+val2);
 	        }
 	        else if (SEdown == true)
 	        {
 	        	player.body.velocity.x = speed;
 	        	player.body.velocity.y = 0;
 
-             updateShadowTexture(player.body.position.x,player.body.position.y);
+//updateShadowTexture(player.body.position.x+val1,player.body.position.y+val2);
 	        }
 	        else if (SWdown == true)
 	        {
 	        	player.body.velocity.y = speed;
 	        	player.body.velocity.x = 0;
 
-             updateShadowTexture(player.body.position.x,player.body.position.y);
+//updateShadowTexture(player.body.position.x+val1,player.body.position.y+val2);
 	        }
 	        else if (NWdown == true)
 	        {
 	        	player.body.velocity.x = -speed;
 	        	player.body.velocity.y = 0;
 
-             updateShadowTexture(player.body.position.x,player.body.position.y);
+//updateShadowTexture(player.body.position.x+val1,player.body.position.y+val2);
 
 	        }
 	        else if (NEdown == true)
@@ -686,7 +686,7 @@ var init = function () {
 	        	player.body.velocity.y = -speed;
 	        	player.body.velocity.x = 0;
 
-             updateShadowTexture(player.body.position.x,player.body.position.y);
+//updateShadowTexture(player.body.position.x+val1,player.body.position.y+val2);
 
 	        }
 	        else
@@ -694,7 +694,6 @@ var init = function () {
 	        	player.body.velocity.x = 0;
 	        	player.body.velocity.y = 0;
 
-             updateShadowTexture(player.body.position.x,player.body.position.y);
 	        }
 
 
@@ -862,7 +861,9 @@ var init = function () {
 	       //cowboy.body.velocity.x = 30;
 
 	       game.iso.topologicalSort(obstacleGroup);
+         updateShadowTexture(player.body.position.x,player.body.position.y);
 
+                   console.log(player.body.position.x,player.body.position.y);
 
 	    },
 	    render: function () {
@@ -885,20 +886,19 @@ var init = function () {
 
 	game.state.add('Boot', BasicGame.Boot);
 	game.state.start('Boot');
+
   function updateShadowTexture(x,y){
     shadowTexture.context.fillStyle = 'rgb(100, 100, 100)';
    shadowTexture.context.fillRect(0, 0,  width,  height);
 
   // Draw circle of light with a soft edge
-  var gradient =  shadowTexture.context.createRadialGradient(
-       x, y,  LIGHT_RADIUS * 0.75,x,  y,  LIGHT_RADIUS);
+  var gradient =  shadowTexture.context.createRadialGradient(x, y,  LIGHT_RADIUS * 0.75,x,  y,  LIGHT_RADIUS);
   gradient.addColorStop(0, 'rgba(255, 255, 255, 1.0)');
   gradient.addColorStop(1, 'rgba(255, 255, 255, 0.0)');
 
    shadowTexture.context.beginPath();
    shadowTexture.context.fillStyle = gradient;
-   shadowTexture.context.arc(x,  y,
-       LIGHT_RADIUS, 0, Math.PI*2);
+   shadowTexture.context.arc(x,  y,LIGHT_RADIUS, 0, Math.PI*2);
    shadowTexture.context.fill();
 
   // This just tells the engine it should update the texture cache
